@@ -8,7 +8,7 @@ function Homepage() {
   // sending request to protected route that needs a token
   async function callProtectedRoute(){
     const token = localStorage.getItem("token")
-    const response= await axios.get(`${import.meta.env.VITE_BACKEND_URL}/test-jwt/checkout`,{headers:{Authorization:`Bearer ${token}`}})
+    const response= await axios.get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/test-jwt/checkout`,{headers:{Authorization:`Bearer ${token}`}})
     console.log(response.data)
   }
 
