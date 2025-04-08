@@ -2,7 +2,6 @@ import { Link } from "react-router"
 import { useContext } from "react"
 import { authContext } from "../context/AuthContext"
 
-
 function Navbar() {
   const {user, logout} = useContext(authContext)
 
