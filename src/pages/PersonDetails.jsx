@@ -39,10 +39,21 @@ return (
     data && (
         <div>
             <h2>Hello {data.username}</h2>
-            <p>first name: {data.firstName}</p>
-            <p>last name: {data.lastName}</p>
-            <p>Email: {data.email}</p>
-            <p>Mode: {data.mode}</p>
+            <ul>
+                <li>
+                First Name: {data.firstName}
+                </li>
+                <li>
+                Last Name: {data.lastName}
+                </li>
+                <li>
+                Email: {data.email}
+                </li>
+                <li>
+                Mode: {data.mode}
+                </li>
+            </ul>
+         
         </div>
     )
   }

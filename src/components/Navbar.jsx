@@ -9,12 +9,21 @@ function Navbar() {
   return (
     <div>
       <ul>
-        <Link to="/"><li>Homepage</li></Link>
+        <button>
+        <Link to="/">Homepage</Link>
+        </button>
         {user && (
 
           <>
-          <li>Welcome {user.username}</li>
+          {/* <li>Welcome {user.username}</li> */}
+          <h2>Welcome {user.username}</h2>
           <button onClick={logout}>Logout</button>
+          <button>
+          <Link to={`persons/${user._id}`}>User Details</Link>
+          </button>
+          <button>
+          <Link to={`persons/edit/${user._id}`}>Edit User Details</Link>
+          </button>
           </>
         )}
         {!user && (
