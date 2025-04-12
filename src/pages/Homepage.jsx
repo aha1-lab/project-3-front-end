@@ -18,10 +18,12 @@ function Homepage() {
   callProtectedRoute()
   return (
     <div>
-      Homepage
+      <h2>Homepage</h2>
       <button>
         <Link to={`persons/${user._id}`}>User Details</Link>
       </button>
+      <br/>
+      <br/>
       <button>
         <Link to={`persons/edit/${user._id}`}>Edit User Details</Link>
       </button>

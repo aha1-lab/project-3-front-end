@@ -66,19 +66,9 @@ const updateUserDetails = async (userId) => {
 };
 
 
-const deletePerson = async (userId) => {
-  try {
-    await api.delete(`/${userId}`);
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
 
 export {
   getPersonDetails,
-  deletePerson,
   getIndex,
   addPerson,
   getUserDestails,

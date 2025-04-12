@@ -23,7 +23,7 @@ function Signup() {
     async function handleSubmit(e){
         e.preventDefault()
         try{
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`,formData)
+            await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/sign-up`,formData)
             navigate("/login")
         }
         catch(err){

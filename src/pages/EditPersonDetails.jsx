@@ -1,16 +1,24 @@
 import {useContext,useEffect,useState} from 'react'
 import { authContext } from '../context/AuthContext'
 import axios from 'axios'
+import {useNavigate, useParams} from 'react-router'
 import { Link } from 'react-router'
 
 function EditPersonDetails() {
 
-    const [data, setData] = useState(null)
+   const {user} = useContext(authContext)
 
-    const {user} = useContext(authContext)
+    const [data, setData] = useState({user})
+
 
 
     const [error, setError] = useState(null)
+
+
+    const navigate = useNavigate()
+
+    const {userId} = useParams()
+    console.log(userId)
 
     function handleChange(e){
         setData({...data,[e.target.name]:e.target.value})
@@ -19,7 +27,8 @@ function EditPersonDetails() {
     async function handleSubmit(e){
         e.preventDefault()
         try{
-            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/edit/persons/${user._id}`,data)
+            await axios.put(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/edit/${userId}`,data)
+            navigate("/")
         }
         catch(err){
             console.log(err)
@@ -27,7 +36,6 @@ function EditPersonDetails() {
     }
 
         
-
 
   return (
     <>
@@ -38,7 +46,7 @@ function EditPersonDetails() {
          type="text"
          name='firstName'
          id='firstName'
-         value={user.firstName}
+         value={data.firstName}
          onChange={handleChange}
           />
 
@@ -47,7 +55,7 @@ function EditPersonDetails() {
          type="text"
          name='lastName'
          id='lastName'
-         value={user.lastName}
+         value={data.lastName}
          onChange={handleChange}
           />
 
@@ -56,14 +64,14 @@ function EditPersonDetails() {
          type="email"
          name='email'
          id='email'
-         value={user.email}
+         value={data.email}
          onChange={handleChange}
           />
 
       <label htmlFor="mode">Mode:</label>
       <select
          name="mode" id="mode"
-         value={user.mode}
+         value={data.mode}
          onChange={handleChange}
          >
             <option value="buyer">Buyer</option>
@@ -76,7 +84,7 @@ function EditPersonDetails() {
          type="password"
          name='password'
          id='password'
-         value={user.password}
+         value={data.password}
          onChange={handleChange}
           />
 
