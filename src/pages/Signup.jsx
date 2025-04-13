@@ -1,8 +1,12 @@
-import {useState} from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router'
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 function Signup() {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
 
     const [formData, setFormData] = useState({
         username:"",
@@ -13,8 +17,10 @@ function Signup() {
         password:"",
     })
 
-    const navigate = useNavigate()
-    
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
 
     function handleChange(e){
         setFormData({...formData,[e.target.name]:e.target.value})
@@ -29,19 +35,20 @@ function Signup() {
         catch(err){
             console.log(err)
         }
+
     }
+  }
   return (
     <div>
-      
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username:</label>
         <input
-         type="text"
-         name='username'
-         id='username'
-         value={formData.username}
-         onChange={handleChange}
-          />
+          type="text"
+          name="username"
+          id="username"
+          value={formData.username}
+          onChange={handleChange}
+        />
 
         <label htmlFor="firstName">First Name:</label>
         <input
@@ -83,17 +90,36 @@ function Signup() {
 
         <label htmlFor="password">Password:</label>
         <input
-         type="password"
-         name='password'
-         id='password'
-         value={formData.password}
-         onChange={handleChange}
-          />
+          type="password"
+          name="password"
+          id="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
 
-          <button>Submit</button>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="userType">userType:</label>
+        <select
+          name="userType"
+          id="userType"
+          value={formData.userType}
+          onChange={handleChange}
+        >
+          <option value="saler">Saler</option>
+          <option value="buyer">Buyer</option>
+        </select>
+        <button>Submit</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;
