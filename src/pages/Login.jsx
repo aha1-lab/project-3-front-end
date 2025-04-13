@@ -21,8 +21,13 @@ function Login() {
       e.preventDefault()
       try{
           const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/login`,formData)
-          console.log(response.data)
+          // console.log(response.data)
           localStorage.setItem("token",response.data.token)
+          const userInfo = {
+            username: response.data.user.username,
+            mode: response.data.user.mode,
+          };
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
           validateToken()
           navigate("/")
       }

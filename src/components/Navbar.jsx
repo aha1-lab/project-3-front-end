@@ -1,43 +1,82 @@
-import { Link } from "react-router"
-import { useContext } from "react"
-import { authContext } from "../context/AuthContext"
+import { Link, NavLink } from "react-router";
+import { useContext } from "react";
+import { authContext } from "../context/AuthContext";
+import {
+  Navbar as NavbarBS,
+  Nav,
+  Container,
+  Button,
+  NavDropdown,
+} from "react-bootstrap";
 
-function Navbar() {
-  const {user, logout} = useContext(authContext)
+import SearchInput from "./SearchInput";
+import CartIcon from "./CartIcon";
 
+function Navbar({ toggleTheme, darkMode }) {
+  const { user, logout } = useContext(authContext);
 
   return (
-    <div>
-      <ul>
-        <button>
-        <Link to="/">Homepage</Link>
-        </button>
+    <NavbarBS
+      sticky="top"
+      className={"shadow-lg mb-3"}>
+      <Container>
+        <Nav className="me-auto">
+          <Nav.Link to="/" as={NavLink}>
+            Home
+          </Nav.Link>
+          {!user && (
+            <>
+              <Nav.Link to="/login" as={NavLink}>
+                Login
+              </Nav.Link>
+              <Nav.Link to="/signup" as={NavLink}>
+                Sign Up
+              </Nav.Link>
+            </>
+          )}
+          {user && (
+            <>
+              <NavDropdown title={`Sitting (${user.username})`}>
+              <NavDropdown.Item as={Link} to={`persons/${user._id}`}>
+                  User Details
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={`persons/edit/${user._id}`}>
+                  Edit User Details
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={"/person/address"}>
+                  Address
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={"/orders"}>
+                  Orders Summary
+                </NavDropdown.Item>
+                {user.mode === "seller" && (
+                  <NavDropdown.Item as={NavLink} to={"/products/new"}>
+                    Add product
+                  </NavDropdown.Item>
+                )}
+              </NavDropdown>
+            </>
+          )}
+        </Nav>
+          <SearchInput/>  
+        {/* <Nav.Link to="/cart" as={NavLink}>
+          <CartIcon />
+        </Nav.Link> */}
+        <Button variant="warning" onClick={toggleTheme}>
+          {darkMode ? (
+            <i className="bi bi-toggle-on" />
+          ) : (
+            <i className="bi bi-toggle-off" />
+          )}
+        </Button>
         {user && (
-
-          <>
-          {/* <li>Welcome {user.username}</li> */}
-          <h2>Welcome {user.username}</h2>
-          <button onClick={logout}>Logout</button>
-          <button>
-          <Link to={`persons/${user._id}`}>User Details</Link>
+          <button className="btn btn-danger" onClick={logout}>
+            Logout
           </button>
-          <button>
-          <Link to={`persons/edit/${user._id}`}>Edit User Details</Link>
-          </button>
-          </>
         )}
-        {!user && (
-          <>
-          <Link to='/login'><li>Login</li></Link>
-          <Link to='/signup'><li>Signup</li></Link>
-          <Link to='/person/new'><li>Add new Person</li></Link>
-          </>
-        )}
-        
-
-      </ul>
-    </div>
-  )
+      </Container>
+    </NavbarBS>
+  );
 }
 
-export default Navbar
+export default Navbar;

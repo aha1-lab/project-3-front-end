@@ -18,7 +18,7 @@ function PersonDetails() {
         const fetchData = async () => {
             console.log(user._id)
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/${user._id}`)
+                const response = await axios.get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/${user._id}`);
                 console.log("Data",response.data)
                 setData(response.data);
             } catch (error) {
