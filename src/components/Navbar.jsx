@@ -22,6 +22,7 @@ function Navbar() {
           <>
           <Link to='/login'><li>Login</li></Link>
           <Link to='/signup'><li>Signup</li></Link>
+          <Link to='/person/new'><li>Add new Person</li></Link>
           </>
         )}
         
