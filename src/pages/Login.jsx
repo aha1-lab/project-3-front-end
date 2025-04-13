@@ -20,11 +20,11 @@ function Login() {
     async function handleSubmit(e){
       e.preventDefault()
       try{
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`,formData)
+          const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/login`,formData)
           console.log(response.data)
           localStorage.setItem("token",response.data.token)
           validateToken()
-          // navigate("/login")
+          navigate("/")
       }
       catch(err){
           console.log(err)

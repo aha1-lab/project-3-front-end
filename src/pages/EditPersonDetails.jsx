@@ -1,54 +1,52 @@
-import {useState} from 'react'
+import {useContext,useEffect,useState} from 'react'
+import { authContext } from '../context/AuthContext'
 import axios from 'axios'
-import { useNavigate } from 'react-router'
+import {useNavigate, useParams} from 'react-router'
+import { Link } from 'react-router'
 
-function Signup() {
+function EditPersonDetails() {
 
-    const [formData, setFormData] = useState({
-        username:"",
-        firstName:"",
-        lastName:"",
-        email:"",
-        mode:"",
-        password:"",
-    })
+   const {user} = useContext(authContext)
+
+    const [data, setData] = useState({user})
+
+
+
+    const [error, setError] = useState(null)
+
 
     const navigate = useNavigate()
-    
+
+    const {userId} = useParams()
+    console.log(userId)
 
     function handleChange(e){
-        setFormData({...formData,[e.target.name]:e.target.value})
+        setData({...data,[e.target.name]:e.target.value})
     }
 
     async function handleSubmit(e){
         e.preventDefault()
         try{
-            await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/sign-up`,formData)
-            navigate("/login")
+            await axios.put(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/edit/${userId}`,data)
+            navigate("/")
         }
         catch(err){
             console.log(err)
         }
     }
-  return (
-    <div>
-      
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input
-         type="text"
-         name='username'
-         id='username'
-         value={formData.username}
-         onChange={handleChange}
-          />
 
+        
+
+  return (
+    <>
+    <h2>Edit user</h2>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name:</label>
         <input
          type="text"
          name='firstName'
          id='firstName'
-         value={formData.firstName}
+         value={data.firstName}
          onChange={handleChange}
           />
 
@@ -57,7 +55,7 @@ function Signup() {
          type="text"
          name='lastName'
          id='lastName'
-         value={formData.lastName}
+         value={data.lastName}
          onChange={handleChange}
           />
 
@@ -66,14 +64,14 @@ function Signup() {
          type="email"
          name='email'
          id='email'
-         value={formData.email}
+         value={data.email}
          onChange={handleChange}
           />
 
       <label htmlFor="mode">Mode:</label>
       <select
          name="mode" id="mode"
-         value={formData.mode}
+         value={data.mode}
          onChange={handleChange}
          >
             <option value="buyer">Buyer</option>
@@ -86,14 +84,14 @@ function Signup() {
          type="password"
          name='password'
          id='password'
-         value={formData.password}
+         value={data.password}
          onChange={handleChange}
           />
 
           <button>Submit</button>
-      </form>
-    </div>
+        </form>
+    </>
   )
 }
 
-export default Signup
+export default EditPersonDetails
