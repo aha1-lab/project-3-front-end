@@ -2,6 +2,7 @@ import {useContext,useEffect,useState} from 'react'
 import { authContext } from '../../context/AuthContext'
 import axios from 'axios'
 import { Link } from 'react-router'
+import { useParams } from 'react-router'
 
 
 function PersonDetails() {
@@ -11,6 +12,9 @@ function PersonDetails() {
     const {user} = useContext(authContext);
 
     const [error, setError] = useState(null)
+
+    const {userId} = useParams();
+
 
 
 
@@ -53,11 +57,14 @@ return (
                 Mode: {data.mode}
                 </li>
             </ul>
-         
+
+            <button>
+                <Link to={`/persons/edit/${userId}`}>Update</Link>
+            </button>
+
         </div>
     )
   }
-
   </>
 )
 }
