@@ -1,5 +1,5 @@
 import {useContext,useEffect,useState} from 'react'
-import { authContext } from '../context/AuthContext'
+import { authContext } from '../../context/AuthContext'
 import axios from 'axios'
 import {useNavigate, useParams} from 'react-router'
 import { Link } from 'react-router'

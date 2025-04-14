@@ -1,5 +1,5 @@
 import {useContext,useEffect,useState} from 'react'
-import { authContext } from '../context/AuthContext'
+import { authContext } from '../../context/AuthContext'
 import axios from 'axios'
 import { Link } from 'react-router'
 
@@ -19,7 +19,7 @@ function PersonDetails() {
             console.log(user._id)
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/${user._id}`);
-                console.log("Data",response.data)
+                // console.log("Data",response.data)
                 setData(response.data);
             } catch (error) {
                 setError(error.message);

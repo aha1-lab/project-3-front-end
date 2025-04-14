@@ -7,6 +7,7 @@ import {
   Container,
   Button,
   NavDropdown,
+  Form,
 } from "react-bootstrap";
 
 import SearchInput from "./SearchInput";
@@ -16,9 +17,7 @@ function Navbar({ toggleTheme, darkMode }) {
   const { user, logout } = useContext(authContext);
 
   return (
-    <NavbarBS
-      sticky="top"
-      className={"shadow-lg mb-3"}>
+    <NavbarBS sticky="top" className={"shadow-lg mb-3"}>
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
@@ -37,7 +36,7 @@ function Navbar({ toggleTheme, darkMode }) {
           {user && (
             <>
               <NavDropdown title={`Sitting (${user.username})`}>
-              <NavDropdown.Item as={Link} to={`persons/${user._id}`}>
+                <NavDropdown.Item as={Link} to={`persons/${user._id}`}>
                   User Details
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to={`persons/edit/${user._id}`}>
@@ -45,6 +44,9 @@ function Navbar({ toggleTheme, darkMode }) {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to={"/person/address"}>
                   Address
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={"/person/addAddress"}>
+                  Add Address
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to={"/orders"}>
                   Orders Summary
@@ -58,17 +60,13 @@ function Navbar({ toggleTheme, darkMode }) {
             </>
           )}
         </Nav>
-          <SearchInput/>  
-        {/* <Nav.Link to="/cart" as={NavLink}>
+        <SearchInput />
+        <Nav.Link to="/cart" as={NavLink} className="pe-2">
           <CartIcon />
-        </Nav.Link> */}
-        <Button variant="warning" onClick={toggleTheme}>
-          {darkMode ? (
-            <i className="bi bi-toggle-on" />
-          ) : (
-            <i className="bi bi-toggle-off" />
-          )}
-        </Button>
+        </Nav.Link>
+        <Form>
+          <Form.Check type="switch" id="custom-switch" onClick={toggleTheme} />
+        </Form>
         {user && (
           <button className="btn btn-danger" onClick={logout}>
             Logout
