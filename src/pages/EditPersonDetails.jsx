@@ -27,7 +27,7 @@ function EditPersonDetails() {
     async function handleSubmit(e){
         e.preventDefault()
         try{
-            await axios.put(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/edit/${userId}`,data)
+            await axios.put(`${import.meta.env.VITE_BACK_END_SERVER_URL}/persons/${userId}`,data)
             navigate("/")
         }
         catch(err){
