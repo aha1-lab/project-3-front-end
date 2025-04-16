@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { authContext } from "../context/AuthContext";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { updateUserDetails } from "../services/PersonService";
 
 function Signup() {
   const navigator = useNavigate();
@@ -18,22 +20,32 @@ function Signup() {
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+      const navigate = useNavigate()
+
+  const {user} = useContext(authContext)
+
+  const {userId} = useParams();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/sign-up`,
-        formData
-      );
-      navigator("/login");
+      console.log(userId)
+      if(userId){
+       const response = await updateUserDetails(userId, formData)
+        navigate(`persons/${userId}`)
+      }
+      else{
+        const response = await axios.post(`${import.meta.env.VITE_BACK_END_SERVER_URL}/auth/sign-up`, formData);
+        navigator("/login");
+      }
     } catch (err) {
       console.log(err);
     }
   }
   return (
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
+        {!userId && (
+          <Form.Group className="mb-3">
           <Form.Label htmlFor="username" className=" mt-3">
             Username
           </Form.Label>
@@ -46,6 +58,8 @@ function Signup() {
             onChange={handleChange}
           />
         </Form.Group>
+        )}
+        
         <div className="row">
           <div className="col">
             <Form.Group className="mb-3">
@@ -117,9 +131,17 @@ function Signup() {
             <option value="seller">Seller</option>
           </select>
         </Form.Group>
-        <Button className="mt-3" variant="primary" type="submit">
-          Sign in
-        </Button>
+        {userId && (
+            <Button className="mt-3" variant="primary" type="submit">
+            Update
+          </Button>
+        )}
+        {!userId && (
+           <Button className="mt-3" variant="primary" type="submit">
+           Sign up
+         </Button>
+        )}
+       
       </Form>
   );
 }

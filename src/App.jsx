@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Navbar from "./components/Navbar";
-import EditPersonDetails from './pages/persons/EditPersonDetails'
-import PersonDetails from './pages/persons/personDetails'
+// import EditPersonDetails from './pages/persons/EditPersonDetails'
+import PersonDetails from './pages/persons/PersonDetails'
 import AddressForm from "./pages/AddressForm";
 import AddressDetails from './pages/AddressDetails';
 import ProductDisplay from "./pages/products/ProductDisplay";
@@ -47,7 +47,7 @@ function App() {
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/login" element={<Login />} />
                   <Route path='/persons/:userId' element={<PersonDetails/>}/>
-                  <Route path='/persons/edit/:userId' element={<EditPersonDetails/>}/>
+                  <Route path='/persons/edit/:userId' element={<Signup/>}/>
                   <Route path="/person/addAddress" element={<AddressForm />} />
                   <Route path="/person/address" element={<AddressDetails />} />
                   <Route path="/person/address/:itemId" element={<AddressForm />} />

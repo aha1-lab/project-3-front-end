@@ -55,9 +55,9 @@ const getUserDestails = async () => {
   }
 };
 
-const updateUserDetails = async (userId) => {
+const updateUserDetails = async (userId, formData) => {
   try {
-    const response = await api.put(`/edit/${userId}`);
+    const response = await api.put(`/${userId}`,formData);
     return response.data;
   } catch (error) {
     console.error('Error fetching product details:', error);
