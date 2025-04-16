@@ -59,7 +59,7 @@ return (
             </ul>
 
             <button>
-                <Link to={`/persons/edit/${userId}`}>Update</Link>
+                <Link to={`/persons/edit/${userId}`}>Edit User Details</Link>
             </button>
 
         </div>
