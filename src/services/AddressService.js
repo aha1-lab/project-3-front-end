@@ -45,6 +45,17 @@ const getAddressDestails = async (itemId) => {
   }
 };
 
+const updateAddress = async (formData, addressId) =>{
+  try {
+    const response = await api.put(`/${addressId}`,
+      formData);
+      return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const deleteAddress = async (itemId) => {
   try {
     await api.delete(`/${itemId}`);
@@ -60,4 +71,5 @@ export {
   deleteAddress,
   getIndex,
   addAddress,
+  updateAddress
 };

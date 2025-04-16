@@ -3,17 +3,18 @@ import {
   getProductDetails,
   deleteProduct,
 } from "../../services/ProductService";
-import { useParams, Link } from "react-router";
+import { useParams, Link, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { authContext } from "../../context/AuthContext";
 import AddToCart from "../../components/AddToCart";
 
 function productDetails() {
-  const { user, logout } = useContext(authContext);
+  const { user} = useContext(authContext);
   const { itemId } = useParams();
   const [productDetails, setProductDetails] = useState(null);
 
+  const navigator = useNavigate(); 
   const getDetails = async () => {
     const productData = await getProductDetails(itemId);
     setProductDetails(productData);
@@ -26,6 +27,7 @@ function productDetails() {
   const handleDelete = async () => {
     try {
       await deleteProduct(productDetails._id);
+      navigator("/");
     } catch (error) {
       console.log(error);
     }

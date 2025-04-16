@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getIndex } from "../services/AddressService";
+import { getOrders } from "../services/OrderService";
 import { useParams, Link } from "react-router";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
 import { authContext } from "../context/AuthContext";
-import AddressItem from "../components/AddressItem";
+import OrderCard from "../components/OrderCard";
 import { Stack } from "react-bootstrap";
 
-function AddressDetails() {
+function OrderList() {
   const { user } = useContext(authContext); 
-  const [addressDetails, setAddressDetails] = useState(null);
+  const [orderList, setOrderList] = useState(null);
 
   const getDetails = async () => {
-    const response = await getIndex();
-    setAddressDetails(response);
+    const response = await getOrders();
+    setOrderList(response);
   };
 
   useEffect(() => {
@@ -22,15 +22,15 @@ function AddressDetails() {
 
   return (
     <>
-      <h1>Addresses</h1>
+      <h1>Order Summary</h1>
       <Stack gap={3}>
-        {addressDetails &&
-          addressDetails.map((address) => (
-            <AddressItem key={address._id} address={address} />
+        {orderList &&
+          orderList.map((order) => (
+            <OrderCard key={order._id} order={order} />
           ))}
       </Stack>
     </>
   );
 }
 
-export default AddressDetails;
+export default OrderList;

@@ -9,6 +9,12 @@ import { Stack, Button, Dropdown } from "react-bootstrap";
 import CartItem from "../components/CartItem";
 import { changeNumberToThreeDicemel } from "../helper/fixedDicemel";
 import { getIndex } from "../services/AddressService";
+import { useContext } from "react";
+import { authContext } from "../context/AuthContext";
+import { createOrder,createOrderProduct} from "../services/OrderService";
+import { removeAllFormCart } from "../services/CartService";
+
+
 
 const computeTotalPrice = (itemsInCart) => {
   let totalPrice = itemsInCart.reduce((total, item) => {
@@ -19,7 +25,7 @@ const computeTotalPrice = (itemsInCart) => {
 
 function Cart() {
   const [dataForm, setDataForm] = useState(null);
-
+  const { user } = useContext(authContext);
   const handleChange = (address) => {
     // console.log(address)
     let addressNew = {
@@ -92,8 +98,32 @@ function Cart() {
   };
 
   const handleCheckout = async ()=>{
-    console.log(dataForm)
-    console.log(itemsInCart)
+    // console.log(dataForm);
+    // console.log(itemsInCart);
+    try {
+      const orderForm = {
+        buyer : user._id,
+        shippingAddres : dataForm.addressId,
+        orderPrice: changeNumberToThreeDicemel(totalPrice),
+      };
+
+      const orderResponse = await createOrder(orderForm);
+      
+      itemsInCart.map(async (item)=>{
+        const orderProductForm = {
+          order: orderResponse._id,
+          product: item.product._id,
+          quantity: item.quantity,
+          price: item.product.price,
+        };
+       await createOrderProduct(orderProductForm);
+      });
+      await removeAllFormCart();
+      checkItemInCart();
+      navigator(`/orders/${orderResponse._id}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

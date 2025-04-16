@@ -3,11 +3,6 @@ import { Link } from "react-router";
 import { Button, ButtonGroup, Card } from "react-bootstrap";
 
 function ProductCard({ product }) {
-  const handleAddToCart = async () => {
-    console.log(product._id);
-  };
-
-  const quantity = 5;
 
   return (
     <Card>
@@ -28,7 +23,6 @@ function ProductCard({ product }) {
           Condition: {product.condition}
         </Card.Subtitle>
         <Card.Text>{product.description}</Card.Text>
-        
       </Card.Body>
     </Card>
   );

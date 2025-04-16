@@ -9,6 +9,9 @@ import AddressDetails from './pages/AddressDetails';
 import ProductDisplay from "./pages/products/ProductDisplay";
 import ProductDetails from "./pages/products/ProductDetails";
 import ProductForm from "./pages/products/ProductForm";
+import OrderList from "./pages/OrderList";
+import OrderSummary from "./pages/OrderSummary";
+
 import { Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
@@ -47,7 +50,10 @@ function App() {
                   <Route path='/persons/edit/:userId' element={<EditPersonDetails/>}/>
                   <Route path="/person/addAddress" element={<AddressForm />} />
                   <Route path="/person/address" element={<AddressDetails />} />
+                  <Route path="/person/address/:itemId" element={<AddressForm />} />
                   <Route path="/" element={<ProductDisplay />} />
+                  <Route path="/orderSammary" element={<OrderList />} />
+                  <Route path="/orderDetails/:orderId" element={<OrderSummary />} />
                   <Route path="/products/new/" element={<ProductForm />} />
                   <Route path="/products/update/:itemId" element={<ProductForm />} />
                   <Route path="/products/:itemId" element={<ProductDetails />} />

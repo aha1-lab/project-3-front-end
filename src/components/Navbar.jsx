@@ -48,7 +48,7 @@ function Navbar({ toggleTheme, darkMode }) {
                 <NavDropdown.Item as={Link} to={"/person/addAddress"}>
                   Add Address
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to={"/orders"}>
+                <NavDropdown.Item as={Link} to={"/orderSammary"}>
                   Orders Summary
                 </NavDropdown.Item>
                 {user.mode === "seller" && (
