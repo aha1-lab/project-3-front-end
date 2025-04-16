@@ -45,7 +45,7 @@ const updateProductToCart = async (itemInCartId,formData)=>{
 
 const removeFormCart = async (itemId)=>{
   try {
-      const response = await api.delete(`/${itemId}`);
+      const response = await api.delete(`/oneItem/${itemId}`);
       return response.data;
   } catch (error) {
       console.log(error);
@@ -53,9 +53,19 @@ const removeFormCart = async (itemId)=>{
   }
 }
 
+const removeAllFormCart = async (itemId)=>{
+    try {
+        const response = await api.delete(`/all`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+  }
 export {
   getPersonCart,
   addProductToCart,
   removeFormCart,
   updateProductToCart,
+  removeAllFormCart,
 };

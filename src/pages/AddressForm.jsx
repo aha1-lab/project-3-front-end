@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { addPerson } from "../services/PersonService";
-import { addAddress } from "../services/AddressService";
-import { useNavigate } from "react-router";
+import { addAddress, updateAddress, getAddressDestails } from "../services/AddressService";
+import { useNavigate, useParams } from "react-router";
 
 const initialState = {
   home: "",
@@ -11,8 +10,11 @@ const initialState = {
   country:"",
   mobilePhone: "",
 };
+
+
 function AddressForm() {
 
+  const {itemId} = useParams();
   const navigate = useNavigate();
   const [dataForm, setDataForm] = useState(initialState);
 
@@ -20,10 +22,28 @@ function AddressForm() {
     setDataForm({ ...dataForm, [target.name]: target.value });
   };
 
+  const addressDetails = async()=>{
+    try {
+      const response = await getAddressDestails(itemId);
+      console.log(response)
+      setDataForm(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    if(itemId){
+      addressDetails();
+    }
+  },[])
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(dataForm);
-    const response = await addAddress(dataForm);
+    if(itemId){
+      const response = await updateAddress(dataForm, itemId);
+    }else{
+      const response = await addAddress(dataForm);  
+    }
     setDataForm(initialState);
     navigate(`/`);
   };
@@ -75,7 +95,8 @@ function AddressForm() {
         </Form.Group>
 
         <Button variant="primary" type="submit">
-          Submit
+          {itemId ? "Update " : "Add "}
+          Address
         </Button>
       </Form>
     </>
