@@ -6,7 +6,7 @@ import {
   updateProductToCart,
 } from "../services/CartService";
 import { Stack, Button, Dropdown } from "react-bootstrap";
-import CartItem from "../components/CartItem";
+import OrderItem from "../components/OrderItem";
 import { changeNumberToThreeDicemel } from "../helper/fixedDicemel";
 import { getIndex } from "../services/AddressService";
 import { useContext } from "react";
@@ -27,18 +27,15 @@ function OrderSummary() {
   const { user } = useContext(authContext);
 
   const [itemsInCart, setItemsInCart] = useState(null);
-  const [orderDetails, setOderDetails] = useState({});
+  const [orderDetails, setOderDetails] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
 
 
   const getOrderAndItems = async () => {
     try {
       const responseOrderDetails = await getOrdersDetails(orderId);
-      // console.log(responseOrderDetails);
       setOderDetails(responseOrderDetails);
-      // console.log(orderDetails);
       const responseItemList = await getOrderProduct(orderId);
-      // console.log(responseItemList)
       setItemsInCart(responseItemList);
       setTotalPrice(computeTotalPrice(responseItemList));
     } catch (error) {
@@ -53,11 +50,12 @@ function OrderSummary() {
 
   return (
     <>
+    {orderDetails && ( <>
       <h1>Cart</h1>
       <Stack gap={3}>
         {itemsInCart ? (
           itemsInCart.map((item) => (
-            <CartItem
+            <OrderItem
               key={item._id}
               item={item}
             />
@@ -79,13 +77,15 @@ function OrderSummary() {
         gap={3}
         className="d-flex align-items-center shadow-lg"
       >
-        <p>Shipping Address</p>
+        <h2>Shipping Address</h2>
         <div className="d-grid gap-2">
           <p>
             Home:{orderDetails.shippingAddres.home}, Road: {orderDetails.shippingAddres.road}, Block: {orderDetails.shippingAddres.block}
           </p>
         </div>
-      </Stack>
+      </Stack> 
+      </>
+    )}
     </>
   );
 }

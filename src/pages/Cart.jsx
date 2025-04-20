@@ -11,9 +11,10 @@ import { changeNumberToThreeDicemel } from "../helper/fixedDicemel";
 import { getIndex } from "../services/AddressService";
 import { useContext } from "react";
 import { authContext } from "../context/AuthContext";
-import { createOrder,createOrderProduct} from "../services/OrderService";
+import { createOrder, createOrderProduct } from "../services/OrderService";
 import { removeAllFormCart } from "../services/CartService";
-
+import {updateProductDetails} from '../services/ProductService';
+import { useNavigate } from "react-router";
 
 
 const computeTotalPrice = (itemsInCart) => {
@@ -24,6 +25,8 @@ const computeTotalPrice = (itemsInCart) => {
 };
 
 function Cart() {
+
+  const navigator = useNavigate();
   const [dataForm, setDataForm] = useState(null);
   const { user } = useContext(authContext);
   const handleChange = (address) => {
@@ -51,7 +54,7 @@ function Cart() {
     try {
       const response = await getIndex();
       setAddressList(response);
-      if(response.length > 0){
+      if (response.length > 0) {
         handleChange(response[0]);
       }
     } catch (error) {
@@ -97,26 +100,28 @@ function Cart() {
     }
   };
 
-  const handleCheckout = async ()=>{
+  const handleCheckout = async () => {
     // console.log(dataForm);
     // console.log(itemsInCart);
     try {
       const orderForm = {
-        buyer : user._id,
-        shippingAddres : dataForm.addressId,
+        buyer: user._id,
+        shippingAddres: dataForm.addressId,
         orderPrice: changeNumberToThreeDicemel(totalPrice),
       };
 
       const orderResponse = await createOrder(orderForm);
-      
-      itemsInCart.map(async (item)=>{
+
+      itemsInCart.map(async (item) => {
         const orderProductForm = {
           order: orderResponse._id,
           product: item.product._id,
           quantity: item.quantity,
           price: item.product.price,
         };
-       await createOrderProduct(orderProductForm);
+        await createOrderProduct(orderProductForm);
+        item.product.stock = item.product.stock - item.quantity;
+        await updateProductDetails(item.product._id, item.product);
       });
       await removeAllFormCart();
       checkItemInCart();
@@ -124,7 +129,7 @@ function Cart() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
@@ -150,38 +155,45 @@ function Cart() {
           )}
         </div>
       </Stack>
+      {totalPrice > 0 ?(
+        <>
+          <Stack
+            direction="horizontal"
+            gap={3}
+            className="d-flex align-items-center shadow-lg"
+          >
+            <p>Select Address</p>
+            <div className="d-grid gap-2">
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  Address
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {addressList &&
+                    addressList.map((address) => (
+                      <Dropdown.Item
+                        key={address._id}
+                        onClick={() => handleChange(address)}
+                        value={dataForm.address}
+                      >
+                        Home:{address.home}, Road: {address.road}, Block:{" "}
+                        {address.block}
+                      </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </Stack>
 
-      <Stack
-        direction="horizontal"
-        gap={3}
-        className="d-flex align-items-center shadow-lg"
-      >
-        <p>Select Address</p>
-        <div className="d-grid gap-2">
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Address
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              {addressList &&
-                addressList.map((address) => (
-                  <Dropdown.Item
-                    key={address._id}
-                    onClick={()=>handleChange(address)}
-                    value={dataForm.address}
-                  >
-                    Home:{address.home}, Road: {address.road}, Block: {address.block}
-                  </Dropdown.Item>
-                ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </Stack>
-      <div className="d-grid gap-2">
-        <Button className="mt-4" size="lg" onClick={handleCheckout}>
-          Checkout
-        </Button>
-      </div>
+          <div className="d-grid gap-2">
+            <Button className="mt-4" size="lg" onClick={handleCheckout}>
+              Checkout
+            </Button>
+          </div>
+        </>
+      ):(
+        <h2>Cart is empty</h2>
+      )}
     </>
   );
 }

@@ -19,6 +19,7 @@ function Navbar({ toggleTheme, darkMode }) {
   return (
     <NavbarBS sticky="top" className={"shadow-lg mb-3"}>
       <Container>
+        <h2 className="badge text-bg-primary">BIDAR</h2>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
             Home

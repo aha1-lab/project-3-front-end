@@ -62,6 +62,7 @@ const deleteProduct = async (itemId) => {
 const updateProductDetails = async (itemId, formData)=>{
   try {
     const response = await api.put(`/${itemId}`,formData);
+    // console.log(formData);
     return response.data;
   } catch (error) {
     console.log(error);
